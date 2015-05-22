@@ -43,8 +43,8 @@ databases=`$MYSQL --user=$USER --password=$PASSWORD -e "SHOW DATABASES;" | grep 
 # dump each database in turn
 for db in $databases; do
         if [ $GZIP_ENABLED == 1 ]; then
-                $MYSQLDUMP --user=$USER --password=$PASSWORD --single-transaction --quick --databases $db | gzip > "$db.gz" && tar rf "all_dbs.tar" "$db.gz" && rm "$db.gz"
+                $MYSQLDUMP --user=$USER --password=$PASSWORD --single-transaction --quick --databases $db | gzip > "$db.gz" && tar rf "$OUTPUTDIR/all_dbs.tar" "$db.gz" && rm "$db.gz"
         else
-                $MYSQLDUMP --user=$USER --password=$PASSWORD --single-transaction --quick --databases $db > "$db.sql" && tar rf "all_dbs.tar" "$db.sql" && rm "$db.sql"
+                $MYSQLDUMP --user=$USER --password=$PASSWORD --single-transaction --quick --databases $db > "$db.sql" && tar rf "$OUTPUTDIR/all_dbs.tar" "$db.sql" && rm "$db.sql"
         fi
 done
