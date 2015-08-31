@@ -12,8 +12,9 @@
 # based on the solution by Daniel Verner (http://carrotplant.com) 
 
 PROG_NAME=$(basename $0)
-USER="backup user"
-PASSWORD="backup user pw"
+# create a configuration first
+# see http://dev.mysql.com/doc/refman/5.6/en/mysql-config-editor.html
+LOGIN_PATH=backup
 OUTPUTDIR=${PWD}
 GZIP_ENABLED=0
 
@@ -43,8 +44,8 @@ databases=`$MYSQL --user=$USER --password=$PASSWORD -e "SHOW DATABASES;" | grep 
 # dump each database in turn
 for db in $databases; do
         if [ $GZIP_ENABLED == 1 ]; then
-                $MYSQLDUMP --user=$USER --password=$PASSWORD --single-transaction --quick --databases $db | gzip > "$db.gz" && tar rf "$OUTPUTDIR/all_dbs.tar" "$db.gz" && rm "$db.gz"
+                $MYSQLDUMP --login-path=$LOGIN_PATH --single-transaction --quick --databases $db | gzip > "$db.gz" && tar rf "$OUTPUTDIR/all_dbs.tar" "$db.gz" && rm "$db.gz"
         else
-                $MYSQLDUMP --user=$USER --password=$PASSWORD --single-transaction --quick --databases $db > "$db.sql" && tar rf "$OUTPUTDIR/all_dbs.tar" "$db.sql" && rm "$db.sql"
+                $MYSQLDUMP --login-path=$LOGIN_PATH --single-transaction --quick --databases $db > "$db.sql" && tar rf "$OUTPUTDIR/all_dbs.tar" "$db.sql" && rm "$db.sql"
         fi
 done
