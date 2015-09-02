@@ -39,7 +39,7 @@ fi
 date > date.index && tar cf "all_dbs.tar" date.index && rm date.index
 
 # get a list of databases
-databases=`$MYSQL --user=$USER --password=$PASSWORD -e "SHOW DATABASES;" | grep -Ev "(Database|information_schema)"`
+databases=`$MYSQL --login-path=$LOGIN_PATH -e "SHOW DATABASES;" | grep -Ev "(Database|information_schema)"`
 
 # dump each database in turn
 for db in $databases; do
